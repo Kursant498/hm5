@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Title</title>
+</head>
+<body>
+
+    <h1>Список курсов</h1>
+    <form method="GET">
+        <input type="text" 
+        name="q"
+        placeholder="Поиск по названию или преподователю курса"
+        value="{{ request.GET.q }}">
+        <button type="submit">Найти</button>
+    </form>
+    <br>
+
+    <div>
+    <a href="?sort=created_at&q={{ request.GET.q }}">Сначала новые</a>
+    </div>
+
+    <a href="{% url 'create' %}">Добавить курс</a>
+
+    <hr>
+
+    {% for course in courses %}
+    <div>
+        <h2> {{ course.title }} </h2>
+
+        <p> {{ course.teacher }} </p>
+
+        <p> {{ course.duration }} </p>
+
+        <a href="{% url 'update' course.id %}">Редактировать</a>
+        <a href="{% url 'delete' course.id %}">Удалить</a>
+
+        {% empty %}
+        <p>Курсы не найдены</p>
+    </div>
+    <hr>
+    {% endfor %}
+
+</body>
+
+</html>
