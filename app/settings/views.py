@@ -5,7 +5,7 @@ from django.views.generic import (
     DeleteView
 )
 from django.urls import reverse_lazy
-from django.db.models import Q
+
 from .models import Course
 
 
@@ -16,21 +16,14 @@ class CourseList(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get("q")
-        sort = self.request.GET.get("sort")
 
         if query:
-            que = Course.objects.filter(
-                Q(title__icontains=query) | Q(teacher__icontains=query)
+            return Course.objects.filter(
+                title__icontains=query
             )
-        else:
-            que = Course.objects.all()
+        
+        return Course.objects.all()
 
-
-        if sort == "created_at":
-            que = que.order_by("-created_at")
-
-        return que
-    
 class CourseCreate(CreateView):
     model = Course
     template_name = "courses/create.html"
